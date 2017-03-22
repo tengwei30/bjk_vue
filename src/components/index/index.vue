@@ -21,7 +21,7 @@
               <div class="comment_img" v-if="item.images.length == 3 || item.images.length == 0">
                   <span class="img-1" v-for="imgurl in item.images">
                       <img :src="imgurl"/>
-                  </span>
+                   </span>
               </div>
               <div class="comment_state" v-if="item.images.length == 3 || item.images.length == 0">
                 <span>{{ item.source }}</span><span>{{ item.scanCount }}浏览</span><span>{{ item.publishTime }}</span>
@@ -30,6 +30,21 @@
           </li>
         </ul>
       </mt-loadmore>
+<!--         <ul class="comment_ul">
+          <li class="comment_li" v-for="item in items" style="list-style: none"> 
+            <router-link :to="{ path:'/index/detail/'+item.id}"> 
+              <h4 class="comment_title">{{ item.title }}</h4>
+              <div class="comment_img" v-if="item.images.length == 3 || item.images.length == 0">
+                  <span class="img-1" v-for="imgurl in item.images">
+                      <img :src="imgurl"/>
+                   </span>
+              </div>
+              <div class="comment_state comment_footer">
+                <span>{{ item.source }}</span><span>{{ item.scanCount }}浏览</span><span>{{ item.publishTime }}</span>
+              </div>
+            </router-link>
+          </li>
+        </ul> -->
     </div>
   </div>
 </template>
@@ -42,12 +57,35 @@
       return {
         channels:[],
         TheWidth:'300px',
-        items:[]
+        items:[
+          {
+           id:'',
+          imgurl:'',
+          title:'',
+          source:'',
+          scanCount:'',
+          publishTime:''
+          }
+        ]
       }
     },
-    computed() {
-
-    },
+    // mounted() {
+    //   this.getData();
+    // },
+    // methods: {
+    //   getData() {
+    //     this.$http.jsonp('/api/article',{
+    //       params:{
+    //         tableNum:1,
+    //         justList:1
+    //       }
+    //     }).then(function(response) {
+    //         this.channels = response.body.result.channels;
+    //         this.items = response.body.result.news.items
+    //         this.TheWidth = ((response.body.result.channels.length)*30)+'px';
+    //     })
+    //   }
+    // }
     methods: {
       loadTop() {
         this.$refs.loadmore.onTopLoaded();

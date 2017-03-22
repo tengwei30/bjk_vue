@@ -12,6 +12,7 @@ import movie from '@/components/movie/movie';
 import personal from '@/components/personal/personal';
 
 Vue.config.productionTip = false;
+
 Vue.use(VueRouter);
 Vue.use(VueResource);
 Vue.use(MintUi);
@@ -24,8 +25,6 @@ const routes = [
   { path: '/personal/personal', component: personal }
 ];
 const router = new VueRouter({
-  mode:"history",
-  saveScrollPosition:true,  //在启用html5 history模式的时候生效，用于后退操作的时候记住之前的滚动条位置
   routes,
   linkActiveClass: 'active'
 });
