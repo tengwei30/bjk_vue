@@ -3,7 +3,7 @@
     <router-view></router-view>
     <div class="footer_tab">
       <div class="tab-item">
-        <router-link to="/index/index">首页</router-link>
+        <router-link to="/home/home">首页</router-link>
       </div>
       <div class="tab-item">
       <router-link to="/movie/movie">视频</router-link>
@@ -16,10 +16,10 @@
 </template>
 
 <script>
-import index from '@/components/index/index';
+import home from '@/components/home/home';
 export default {
   components: {
-    index
+    home
   }
 }
 </script>
