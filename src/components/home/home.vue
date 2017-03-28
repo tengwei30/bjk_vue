@@ -1,24 +1,10 @@
 <template>
 	<div id="card">
 		<div class="card">
-		    <!-- <div valign="bottom" class="card-header color-white no-border no-padding">
-		      <img class='card-cover' :src="item.text_image0" alt="">
-		    </div>
-		    <div class="card-content">
-		      <div class="card-content-inner">
-		        <p class="color-gray">发表于 {{item.edit_time}}</p>
-		        <p>{{item.digest}}</p>
-		      </div>
-		    </div>
-		    <div class="card-footer">
-		      <a href="#" class="link">赞</a> 
-		      <router-link :to="{ path:'/content/'+item.news_id}" class="link">更多</router-link>
-		    </div> -->
-
 		    <ul class="card_list">
 		    	<li class="card_li" v-for="(item,index) in news">
 		    		<div class="card_item" v-if="item.images.length == 3 || item.images.length == 0">
-		    			<router-link :to="{ path:'/content/'+item.news_id}" class="link">
+		    			<router-link :to="{ path:'/home/detail/'+item.id}" class="link">
 			    			<h4>{{ item.title }}</h4>
 			    			<div class="card_img">
 			    				<span class="img_1" v-for="imgUrl in item.images">
@@ -49,10 +35,9 @@
 			return{
 				news:[
 					{
-							
+						id: ''
 					}
-				],
-				pages:1
+				]
 			}
 		},
 		mounted:function(){
@@ -69,7 +54,6 @@
 					pageSize: 10,
 					type: 0
 				}).then(function(res){
-					console.log(res.body)
 					this.news = res.body.result.news.items;
 				},function(msg){
 					console.log(msg);
@@ -92,10 +76,6 @@
 		}
 		
 	}
-
-
-	
-	
 	
 </script>
 <style lang="stylus" rel="stylesheet/stylus">
