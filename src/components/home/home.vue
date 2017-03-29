@@ -1,6 +1,16 @@
 <template>
 	<div id="card">
-		<div class="card">
+		<mt-navbar v-model="selected" fixed class="nav">
+			<mt-tab-item class="tab_nav" v-for="(channel,index) in channels" :id="index+'1'" @click="tabNews(index,$event)">{{ channel.title }}</mt-tab-item>
+		</mt-navbar>
+
+		<mt-tab-container v-model="selected" style="padding-top: 40px">
+			<mt-tab-container-item v-for="(channel,index) in channels" :id="index+'1'">
+				<p>{{index+1}}</p>
+			</mt-tab-container-item>
+
+		</mt-tab-container>
+		<!-- <div class="card">
 		    <ul class="card_list">
 		    	<li class="card_li" v-for="(item,index) in news">
 		    		<div class="card_item" v-if="item.images.length == 3 || item.images.length == 0">
@@ -21,31 +31,37 @@
 		    </ul>
 		    <div class="btn_more" @click="more">
 				点击加载更多
-			</div>
+			</div> -->
 		</div>
 		
 	</div>
 </template>
 
 <script type="text/javascript">
-
+	import Vue from 'vue';
+	import { Navbar, TabItem, TabContainer } from 'mint-ui';
+	Vue.component(Navbar.name, Navbar);
+	Vue.component(TabItem.name, TabItem);
+	Vue.component(TabContainer.name, TabContainer)
 	export default{
 		name:'card',
 		data(){
 			return{
+				selected: '',
 				news:[
 					{
 						id: ''
 					}
-				]
+				],
+				channels:[
+
+				],
+				
 			}
 		},
 		mounted:function(){
 		  	this.getData();
-		},
-		created:function(){
-			
-			
+		  	this.getChannel();
 		},
 		methods:{
 			getData:function(){
@@ -72,15 +88,43 @@
 				},function(msg){
 					console.log(msg)
 				})
+			},
+			getChannel() {
+				this.$http.post("/api/article",{
+					type: 0
+				}).then(function(res){
+					
+					this.channels = res.body.result.channels;
+				},function(msg){
+					console.log(msg);
+				})
+			},
+			tabNews(index,$event) {
+				if (!event._constructed) { // 避免网页点击触发两遍  给它传一个事件
+					return;
+				}
+
 			}
+
 		}
 		
 	}
 	
 </script>
 <style lang="stylus" rel="stylesheet/stylus">
+	.nav
+		width:100%
+		overflow-x:scroll
+		.mint-tab-item
+			padding:0 !important
+			height:29px
+			line-height:29px
+	.nav .mint-tab-item.tab_nav .mint-tab-item-label
+		width:32px
+		display:inline-block
+		padding:0
 	.card
-		margin-bottom:50px
+		margin:40px 0 50px 0
 		.btn_more
 			height:40px
 			line-height:40px
