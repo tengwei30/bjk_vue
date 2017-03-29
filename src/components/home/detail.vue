@@ -1,6 +1,6 @@
 <template>
 	<div class="detail">
-		<div class="news-contnet" id="abc"></div>
+		<div class="news-contnet" id="abc" v-html>{{ linkUrl }}</div>
 	</div>
 </template>
 <script>
@@ -13,14 +13,19 @@
 		data() {
 			return {
 				msg: '欢迎来到八角客',
-				id: '',
+				newsID: '',
+				linkUrl: ''
 			}
 		},
 		created() {
 			this.$http.post('/api/article/detail',{
-				id: this.$route.params.id
+				// newsID: this.$route.params.id
+				newsID: '2335913',
+				channelid:24,
+				devicenum:'7BB3C249-BC10-4D80-84B5-0721B2833CBC'
 			}).then(function(res){
-				document.getElementById('abc').innerHTML = res.body.result.news.items.linkUrl;
+				this.linkUrl = res.body.result.detail.linkUrl;
+				console.log(this.linkUrl)
 			},function(msg){
 				console.log(msg)
 			})

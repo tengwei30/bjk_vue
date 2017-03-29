@@ -1,39 +1,36 @@
 <template>
 	<div id="card">
 		<mt-navbar v-model="selected" fixed class="nav">
-			<mt-tab-item class="tab_nav" v-for="(channel,index) in channels" :id="index+'1'" @click="tabNews(index,$event)">{{ channel.title }}</mt-tab-item>
+			<mt-tab-item class="tab_nav" v-for="(channel,index) in channels" :id="index+'1'" @click.native = "TabNews(index,$event)">{{ channel.title }}</mt-tab-item>
 		</mt-navbar>
 
 		<mt-tab-container v-model="selected" style="padding-top: 40px">
 			<mt-tab-container-item v-for="(channel,index) in channels" :id="index+'1'">
-				<p>{{index+1}}</p>
+				<div class="card">
+				    <ul class="card_list">
+				    	<li class="card_li" v-for="(item,index) in news">
+				    		<div class="card_item" v-if="item.images.length == 3 || item.images.length == 0">
+				    			<router-link :to="{ path:'/home/detail/'+item.id}" class="link">
+					    			<h4>{{ item.title }}</h4>
+					    			<div class="card_img">
+					    				<span class="img_1" v-for="imgUrl in item.images">
+						    				<img :src="imgUrl" />
+						    			</span>
+					    			</div>
+					    			<div class="card_footer">
+					    				<span>{{ item.source }}</span><span>{{ item.scanCount }}浏览</span><span>{{ item.publishTime }}</span>
+					    			</div>
+					    		</router-link>
+				    		</div>
+				    	</li>
+				    </ul>
+				    <div class="btn_more" @click="more">
+						点击加载更多
+					</div>
+				</div>
 			</mt-tab-container-item>
 
-		</mt-tab-container>
-		<!-- <div class="card">
-		    <ul class="card_list">
-		    	<li class="card_li" v-for="(item,index) in news">
-		    		<div class="card_item" v-if="item.images.length == 3 || item.images.length == 0">
-		    			<router-link :to="{ path:'/home/detail/'+item.id}" class="link">
-			    			<h4>{{ item.title }}</h4>
-			    			<div class="card_img">
-			    				<span class="img_1" v-for="imgUrl in item.images">
-				    				<img :src="imgUrl" />
-				    			</span>
-			    			</div>
-			    			<div class="card_footer">
-			    				<span>{{ item.source }}</span><span>{{ item.scanCount }}浏览</span><span>{{ item.publishTime }}</span>
-			    			</div>
-			    		</router-link>
-		    		</div>
-		    		
-		    	</li>
-		    </ul>
-		    <div class="btn_more" @click="more">
-				点击加载更多
-			</div> -->
-		</div>
-		
+		</mt-tab-container>		
 	</div>
 </template>
 
@@ -45,7 +42,7 @@
 	Vue.component(TabContainer.name, TabContainer)
 	export default{
 		name:'card',
-		data(){
+		data(){	
 			return{
 				selected: '',
 				news:[
@@ -53,20 +50,17 @@
 						id: ''
 					}
 				],
-				channels:[
-
-				],
-				
+				channels:[]
 			}
 		},
 		mounted:function(){
-		  	this.getData();
-		  	this.getChannel();
+		  	this.getData(1);
+		  	this.getChannel(1);
 		},
 		methods:{
-			getData:function(){
+			getData:function(id){
 				this.$http.post("/api/article",{
-					channelID: 1,
+					channelID: id,
 					pageSize: 10,
 					type: 0
 				}).then(function(res){
@@ -75,11 +69,11 @@
 					console.log(msg);
 				})
 			},
-			more:function(){
+			more:function(id){
 				var that=this;
 				this.$http.post("/api/article",{
 					params:{
-						channelID: 1,
+						channelID: id,
 						pageSize: 10,
 						type: 0
 					}
@@ -93,23 +87,22 @@
 				this.$http.post("/api/article",{
 					type: 0
 				}).then(function(res){
-					
 					this.channels = res.body.result.channels;
 				},function(msg){
 					console.log(msg);
 				})
 			},
-			tabNews(index,$event) {
+			TabNews:function(index) {
+				index =index + 1;
+				this.getData(index)
 				if (!event._constructed) { // 避免网页点击触发两遍  给它传一个事件
 					return;
 				}
-
 			}
 
 		}
 		
 	}
-	
 </script>
 <style lang="stylus" rel="stylesheet/stylus">
 	.nav
@@ -124,7 +117,7 @@
 		display:inline-block
 		padding:0
 	.card
-		margin:40px 0 50px 0
+		margin:0px 0 50px 0
 		.btn_more
 			height:40px
 			line-height:40px
