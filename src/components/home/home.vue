@@ -3,7 +3,6 @@
 		<mt-navbar v-model="selected" fixed class="nav">
 			<mt-tab-item class="tab_nav" v-for="(channel,index) in channels" :id="index+'1'" @click.native = "TabNews(index,$event)">{{ channel.title }}</mt-tab-item>
 		</mt-navbar>
-
 		<mt-tab-container v-model="selected" style="padding-top: 40px">
 			<mt-tab-container-item v-for="(channel,index) in channels" :id="index+'1'">
 				<div class="card">
@@ -53,6 +52,9 @@
 				channels:[]
 			}
 		},
+		beforeCreate() {
+			this.getInit();
+		},
 		mounted:function(){
 		  	this.getData(1);
 		  	this.getChannel(1);
@@ -98,6 +100,9 @@
 				if (!event._constructed) { // 避免网页点击触发两遍  给它传一个事件
 					return;
 				}
+			},
+			getInit() {
+				document.getElementsByClassName('tab_nav')[0].className="mint-tab-item tab_nav is-selected"
 			}
 
 		}
@@ -108,10 +113,14 @@
 	.nav
 		width:100%
 		overflow-x:scroll
+		border-bottom:1px solid #ddd
+		&::-webkit-scrollbar
+			width:0
+			height:0
 		.mint-tab-item
 			padding:0 !important
 			height:29px
-			line-height:29px
+			line-height:29px	
 	.nav .mint-tab-item.tab_nav .mint-tab-item-label
 		width:32px
 		display:inline-block
