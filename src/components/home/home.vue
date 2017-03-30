@@ -10,7 +10,7 @@
 				    <ul class="card_list">
 				    	<li class="card_li" v-for="(item,index) in news">
 				    		<div class="card_item" v-if="item.images.length == 3 || item.images.length == 0">
-				    			<router-link :to="{ path:'/home/detail/'+item.id}" class="link">
+				    			<router-link :to="{ path:'/home/detail/'+item.id+'/'+item.channelid}" class="link">
 					    			<h4>{{ item.title }}</h4>
 					    			<div class="card_img">
 					    				<span class="img_1" v-for="imgUrl in item.images">

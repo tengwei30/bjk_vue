@@ -20,7 +20,7 @@ Vue.use(MintUi);
 
 const routes = [
   { path: '/home/home', component: home },
-  { path: '/home/detail/:id', component: detail },
+  { path: '/home/detail/:id/:channelid', component: detail },
   { path: '/movie/movie', component: movie },
   { path: '/personal/personal', component: personal }
 ];
@@ -33,6 +33,6 @@ new Vue({
   template: '<App/>',
   components: { App }
 }).$mount('#app');
-
+router.replace('/home/home');
 // router.push('/home/home');
 
